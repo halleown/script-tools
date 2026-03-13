@@ -11,14 +11,14 @@ chcp 65001
 setlocal enabledelayedexpansion
 
 :: 目标根目录
-set "target_path=E:\target"
+set "target_path=E:\adb_logcat\target"
 :: 源文件所在的具体目录
-set "source_path=E:\000123456789"
+set "source_path=E:\adb_logcat\00123456789"
 :: 指定生成的文件夹数量
 set /a folder_count=10
 
 :: --- 随机时间范围限制 ---
-set /a min_year=2024
+set /a min_year=2025
 set /a max_year=2026
 set /a min_month=1
 set /a max_month=12
@@ -66,7 +66,7 @@ for /l %%i in (1,1,%folder_count%) do (
 
     :: 随机中文词组
     set "r_cn="
-    set /a "cn_idx=!random! %% 6"
+    set /a "cn_idx=!random! %% 4"
     set "list=防盗;UI测试;遥控测频;ECU克隆"
     set "n=0"
     for %%a in (!list!) do (
@@ -107,6 +107,7 @@ for /l %%i in (1,1,%folder_count%) do (
             set "found_json=1"
         )
     )
+    echo [√] 已生成: !json_name!
 )
 
 echo ------------------------------------------
