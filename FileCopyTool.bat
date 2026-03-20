@@ -74,6 +74,10 @@ for /l %%i in (1,1,%folder_count%) do (
         set /a "n+=1"
     )
 
+    :: 生成1-100的随机数
+    set /a "r_num_100=(!random! %% 100) + 1"
+
+
     :: 执行目录创建与文件复制
     echo [%%i/%folder_count%] 正在创建: !folder_name!
     
@@ -99,7 +103,7 @@ for /l %%i in (1,1,%folder_count%) do (
     )
 
     :: 复制 JSON (去源目录根目录找)
-    set "json_name=!r_cn!!r_year!_pingpai_!mydate!_0.json"
+    set "json_name=!r_cn!!r_year!_pingpai_!mydate!_!r_num_100!_1.json"
     set "found_json=0"
     for %%f in ("%source_path%\*.json") do (
         if !found_json! equ 0 (
