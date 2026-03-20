@@ -15,36 +15,40 @@ def create_random_package(target_dir):
     full_folder_path = os.path.join(root_path, folder_id)
     os.makedirs(full_folder_path, exist_ok=True)
 
-    module_list = ["防盗", "UI测试", "遥控测频", "ECU克隆"]
+    module_list = ["防盗", "UI测试", "遥控测频", "ECU克隆", "系统扫描"]
     module_name = module_list[random.randint(0, len(module_list)-1)]
     # 年款：2010-2026 之间
     year_name = random.randint(2010, 2026)
     brand_name = fake.company_prefix()
-    # 时间
-    time_str = fake.date(pattern="%Y-%m-%d %H-%M-%S")
-    # time_str = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
     # 故障码数量
     dtc_count = random.randint(0, 50)
     # 维修状态
     repair_status = random.randint(0, 1)
     # 图片路径
     picList = []
-    for i in range(5):
-        picList.append(f"/storage/emulated/0/DCIM/Camera/pic{i}.jpg")
+    for _ in range(random.randint(0, 6)):
+        i = random.randint(1, 11)
+        picList.append(f"/storage/emulated/0/DCIM/Camera/pic{i}.png")
     
+    # 时间 指定年月范围
+    start_date = datetime(2025, 1, 1)
+    end_date = datetime(2026, 3, 20)
+    random_date = fake.date_time_between(start_date=start_date, end_date=end_date)
+    time_format_a = random_date.strftime("%Y-%m-%d %H-%M-%S")
+    time_format_b = random_date.strftime("%Y-%m-%d %H:%M:%S")
 
     # 格式：(模块名)年款_品牌_时间_故障码数量_维修状态.json
-    file_name = f"({module_name}){year_name}_{brand_name}_{time_str}_{dtc_count}_{repair_status}.json"
+    file_name = f"({module_name}){year_name}_{brand_name}_{time_format_a}_{dtc_count}_{repair_status}.json"
     file_path = os.path.join(full_folder_path, file_name)
 
     data = {
       "HoursVal": "24",
       "MaintainState": repair_status,
       "MaintenanceStaff": fake.name(),
-      "Remark": "weixiubeizhu",
+      "Remark": "维修备注",
       "Summarize": "",
       "BrandName": brand_name,
-      "createTime": "2026-03-11 11:20:47",
+      "createTime": time_format_b,
       "isGeneratedSeparately": True,
       "MileageVaule": "123",
       "ModelName": module_name,
@@ -121,8 +125,7 @@ def create_random_package(target_dir):
 
 if __name__ == "__main__":
     my_path = r"E:/adb_logcat/target111"
-    # my_path = r"./.a111111"
 
-    n = 1
+    n = 10
     for _ in range(n):
         create_random_package(my_path)
