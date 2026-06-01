@@ -39,8 +39,8 @@ def find_sheet_by_head(excel_head_dict, head_name):
 
 if __name__ == '__main__':
     sys.stdout.reconfigure(encoding='utf-8')
-    file_path = "D:/DOC/平板界面文本 string完整版.xls"
-    head_name = "SV"
+    file_path = "E:/平板界面文本 string完整版.xls"
+    head_name = "SR"
 
     excel_head_dict = read_excel_header(file_path)
     print('tips: 输出格式为：{sheet名称: [该sheet名称下所有表头]}')

@@ -6,6 +6,11 @@ import openpyxl
 import xlrd
 import xml.etree.ElementTree as ET
 
+'''
+python i18n/android_translate_string_by_excel.py --excel 'E:/平板界面文本 string完整版.xls' --project 'D:/AndroidStudioProjects/Baseline_main' --lang 'sr' --exclude 'build' 'DP5254' 'DP53AIC' 'DP53MINI' 'DP800' 'DP8000' 'DP82_AIC' 'DP83CANDO' 'DPAK' 'F8SM' 'MD78' 'MT' 'common' 'common-core' 'common-http' 'common-jni' 'common-logger' 'common-vci' 'common-x5' 'module-x5' 'module-netchecker-app'
+'''
+
+
 # 检查路径是否存在
 def verify_path(path):
     if os.path.exists(path):
@@ -135,27 +140,26 @@ def read_translate_excel(translate_file_path, code=''):
     # 这里为了兼容原代码库逻辑，保留 xlrd，但建议用户尽量转为 openpyxl
     try:
         wb = xlrd.open_workbook(translate_file_path)
-        sheet = wb.sheet_by_index(0) # 默认读取第一个sheet
-        
-        # 寻找对应的列
-        mycol = -1
-        #表头
-        header_row = sheet.row_values(0)
-        for col_index, value in enumerate(header_row):
-            if str(value).lower() == code.lower():
-                mycol = col_index
-                break
-        
-        if mycol == -1:
-            raise Exception(f'⚠️ Excel中没有找到名为 {code} 的语言列')
+        for sheet in wb.sheets():
+            # 寻找对应的列
+            mycol = -1
+            #表头
+            header_row = sheet.row_values(0)
+            for col_index, value in enumerate(header_row):
+                if str(value).lower() == code.lower():
+                    mycol = col_index
+                    break
 
-        # 读取数据
-        rows = sheet.nrows
-        for row in range(1, rows): # 从第1行开始（跳过表头）
-             key = sheet.cell(row, 0).value
-             value = sheet.cell(row, mycol).value
-             if key:
-                 translate_dict[str(key)] = str(value)
+            if mycol == -1:
+                raise Exception(f'⚠️ Excel中没有找到名为 {code} 的语言列')
+
+            # 读取数据
+            rows = sheet.nrows
+            for row in range(1, rows): # 从第1行开始（跳过表头）
+                 key = sheet.cell(row, 0).value
+                 value = sheet.cell(row, mycol).value
+                 if key:
+                     translate_dict[str(key)] = str(value)
                  
     except Exception as e:
         # 如果 xlrd 失败，且是 xlsx，提示错误
