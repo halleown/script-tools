@@ -1,6 +1,7 @@
 import os
 import requests
 import time
+from dotenv import load_dotenv
 
 '''
 功能：将单个翻译文本根据字典里的语言代码全部翻译，并替换到对应的翻译文件string.xml内
@@ -126,6 +127,17 @@ def append_string_pure_text(xml_path, name, text):
 
 
 def main():
+    # 加载当前目录下的 .env 文件
+    load_dotenv()
+
+    # 从环境变量中读取 Key，如果找不到则返回 None
+    global google_translate_key
+    google_translate_key = os.getenv("GOOGLE_TRANSLATE_API_KEY")
+
+    if not google_translate_key:
+        print("错误：未在 .env 文件中找到 GOOGLE_TRANSLATE_API_KEY")
+        return
+
     if not os.path.exists(RES_PATH):
         print(f"错误: 路径不存在 -> {RES_PATH}")
         return
