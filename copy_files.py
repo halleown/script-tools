@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import shutil
 
@@ -52,10 +53,23 @@ def copy_files_from_list(project_root, txt_file_path, output_dir):
 
 
 if __name__ == "__main__":
+    current_time = datetime.now().strftime("%Y%m%d%H%M")
+    PROJECT_NAME = "Baseline_zscan"
     # ------------------ 配置参数 ------------------
-    PROJECT_ROOT = r"D:/AndroidStudioProjects/Baseline_main"                           # 项目根目录
-    TXT_FILE = r"D:/AndroidStudioProjects/Baseline_main/git_all_commit_files.txt"      # 包含相对路径列表的 txt 文件
-    OUTPUT_DIR = r"E:/Demo_Exported_Files"                                             # 复制出来的目标文件夹
+    # 项目根目录
+    PROJECT_ROOT = r"D:/AndroidStudioProjects/" + PROJECT_NAME
+    # 包含相对路径列表的 txt 文件
+    TXT_FILE = r"D:/AndroidStudioProjects/" + PROJECT_NAME + "/git_all_commit_files.txt"
+    # 复制出来的目标文件夹
+    OUTPUT_DIR = r"E:/" + PROJECT_NAME + "_Copy_Files_" + current_time
     # ----------------------------------------------
 
     copy_files_from_list(PROJECT_ROOT, TXT_FILE, OUTPUT_DIR)
+
+
+    # 复制完成后，删除 TXT_FILE
+    if os.path.exists(TXT_FILE):
+        os.remove(TXT_FILE)
+        print(f"已删除文件列表文件: {TXT_FILE}")
+    else:
+        print(f"文件列表文件不存在，无法删除: {TXT_FILE}")
